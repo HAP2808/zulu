@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>For Zalak</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fcefef;
+      --ink: #3d1424;
+      --soft: #8a5565;
+      --rose: #c8456b;
+      --on: #fff;
+      --line: #efcdd3;
+      --card: #fff8f6;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --hand: Caveat, "Segoe Script", "Bradley Hand", cursive;
+      box-sizing: border-box;
+      padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px)
+    }
+
+    @media(prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #2a111c;
+        --ink: #fbe6e4;
+        --soft: #dba9b6;
+        --rose: #ff7b9f;
+        --on: #2a111c;
+        --line: #55283a;
+        --card: #3a1827
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #2a111c;
+      --ink: #fbe6e4;
+      --soft: #dba9b6;
+      --rose: #ff7b9f;
+      --on: #2a111c;
+      --line: #55283a;
+      --card: #3a1827
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--serif);
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation
+    }
+
+    #fl {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none
+    }
+
+    #fl span {
+      position: absolute;
+      bottom: -40px;
+      color: var(--rose);
+      opacity: .15;
+      animation: rise linear infinite
+    }
+
+    #bar {
+      position: fixed;
+      top: env(safe-area-inset-top, 0px);
+      left: 0;
+      height: 3px;
+      background: var(--rose);
+      transition: width .6s;
+      z-index: 9
+    }
+
+    #pg {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 26px;
+      padding: 28px 30px 64px;
+      text-align: center
+    }
+
+    h1 {
+      margin: 0;
+      font: italic 500 clamp(27px, 8vw, 40px)/1.3 var(--serif);
+      max-width: 15em
+    }
+
+    p {
+      margin: 0;
+      font: 600 clamp(24px, 6.5vw, 30px)/1.25 var(--hand);
+      color: var(--soft);
+      max-width: 16em
+    }
+
+    .in>* {
+      animation: fade 1s ease both
+    }
+
+    .in>:nth-child(2) {
+      animation-delay: .35s
+    }
+
+    .in>:nth-child(3) {
+      animation-delay: .8s
+    }
+
+    #hint {
+      position: fixed;
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+      left: 0;
+      right: 0;
+      text-align: center;
+      font: 500 20px var(--hand);
+      color: var(--soft);
+      animation: blink 2.6s ease-in-out infinite;
+      z-index: 2;
+      pointer-events: none
+    }
+
+    button {
+      font: 600 28px var(--hand);
+      border: 0;
+      border-radius: 40px;
+      padding: 10px 40px;
+      cursor: pointer
+    }
+
+    .yes {
+      position: relative;
+      z-index: 5;
+      background: var(--rose);
+      color: var(--on);
+      box-shadow: 0 8px 22px rgba(200, 69, 107, .35);
+      transition: transform .35s
+    }
+
+    .no {
+      z-index: 4;
+      background: transparent;
+      color: var(--soft);
+      border: 2px solid var(--line)
+    }
+
+    .btns {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: center;
+      min-height: 76px
+    }
+
+    .beat {
+      animation: beat 1.8s ease-in-out infinite;
+      filter: drop-shadow(0 8px 14px rgba(200, 69, 107, .3))
+    }
+
+    .cal {
+      width: 176px;
+      border-radius: 14px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 26px rgba(120, 30, 60, .16);
+      overflow: hidden;
+      transform: rotate(-3deg)
+    }
+
+    .cal b {
+      display: block;
+      background: var(--rose);
+      color: var(--on);
+      font: 600 17px/2.1 var(--serif);
+      letter-spacing: .25em
+    }
+
+    .cal i {
+      display: block;
+      font: italic 600 84px/1.1 var(--serif);
+      padding: 4px 0 12px
+    }
+
+    .row {
+      display: flex;
+      gap: 20px;
+      font-size: 58px;
+      line-height: 1
+    }
+
+    .row span {
+      animation: bob 2.8s ease-in-out infinite
+    }
+
+    .row span:nth-child(2) {
+      animation-delay: .5s
+    }
+
+    .row span:nth-child(3) {
+      animation-delay: 1s
+    }
+
+    .inf {
+      stroke-dasharray: 1;
+      animation: draw 3.2s ease .3s both
+    }
+
+    .fly {
+      position: relative;
+      width: min(300px, 80vw);
+      height: 140px
+    }
+
+    .fly span {
+      position: absolute;
+      font-size: 38px;
+      animation: drift 3.5s ease-in-out infinite alternate
+    }
+
+    .globe {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      display: grid;
+      place-items: center;
+      font-size: 84px
+    }
+
+    .orbit {
+      position: absolute;
+      inset: 0;
+      animation: spin 7s linear infinite
+    }
+
+    .orbit span {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      margin-left: -17px;
+      font-size: 34px;
+      transform: rotate(45deg)
+    }
+
+    .cup {
+      position: relative;
+      font-size: 84px;
+      line-height: 1
+    }
+
+    .cup i {
+      position: absolute;
+      bottom: 90%;
+      width: 5px;
+      height: 24px;
+      border-radius: 5px;
+      background: var(--soft);
+      opacity: 0;
+      animation: steam 2.6s ease-out infinite
+    }
+
+    .two {
+      display: flex;
+      gap: 18px
+    }
+
+    .two svg:nth-child(1) {
+      animation: jl 2s ease .6s both
+    }
+
+    .two svg:nth-child(2) {
+      animation: jr 2s ease .6s both
+    }
+
+    .mk {
+      animation: bob 2.4s ease-in-out infinite
+    }
+
+    .jump .mk {
+      animation: jump .9s ease-in-out infinite
+    }
+
+    .cf {
+      position: fixed;
+      top: -40px;
+      z-index: 8;
+      pointer-events: none;
+      animation: fall linear forwards
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    @keyframes beat {
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      15% {
+        transform: scale(1.13)
+      }
+
+      30% {
+        transform: scale(1)
+      }
+
+      45% {
+        transform: scale(1.09)
+      }
+    }
+
+    @keyframes rise {
+      to {
+        transform: translateY(-115vh) rotate(25deg)
+      }
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(112vh) rotate(360deg)
+      }
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: .3
+      }
+    }
+
+    @keyframes bob {
+      50% {
+        transform: translateY(-10px)
+      }
+    }
+
+    @keyframes jump {
+      50% {
+        transform: translateY(-22px) rotate(6deg)
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    @keyframes draw {
+      from {
+        stroke-dashoffset: 1
+      }
+
+      to {
+        stroke-dashoffset: 0
+      }
+    }
+
+    @keyframes drift {
+      from {
+        transform: translate(0, 0) rotate(-12deg)
+      }
+
+      to {
+        transform: translate(22px, -26px) rotate(14deg)
+      }
+    }
+
+    @keyframes steam {
+      0% {
+        opacity: 0;
+        transform: translateY(0)
+      }
+
+      40% {
+        opacity: .5
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(-34px) scaleY(1.3)
+      }
+    }
+
+    @keyframes jl {
+      to {
+        transform: translateX(40px) rotate(-8deg)
+      }
+    }
+
+    @keyframes jr {
+      to {
+        transform: translateX(-40px) rotate(8deg)
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      * {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="bar"></div>
+  <div id="fl"></div>
+  <div id="pg"></div>
+  <div id="hint"></div>
+  <script>
+    // Her voice message: replace voice.mp3 (same folder) with your recording, keeping the same file name.
+    const AUDIO = "voice.mp3";
+    const $ = s => document.getElementById(s), R = (a, b) => a + Math.random() * (b - a);
+    const v = new Audio(AUDIO); v.preload = "auto";
+    const HP = "M50 85C10 55 0 30 15 15 30 0 47 10 50 25 53 10 70 0 85 15 100 30 90 55 50 85Z";
+    const heart = (s = 120) => `<svg class="beat" width="${s}" viewBox="0 0 100 90"><path d="${HP}" fill="var(--rose)"/></svg>`;
+    function bird(s = 140) {
+      return `<svg class="mk" width="${s}" viewBox="0 0 100 100"><path d="M44 30Q41 20 47 25M50 28Q51 17 56 26" fill="none" stroke="#7a4a2e" stroke-width="3" stroke-linecap="round"/><path d="M42 82V90M58 82V90M42 90l-4 2M42 90l4 2M58 90l-4 2M58 90l4 2" fill="none" stroke="#f0a030" stroke-width="3" stroke-linecap="round"/><ellipse cx="50" cy="56" rx="31" ry="27" fill="#b07a52"/><ellipse cx="23" cy="60" rx="8" ry="15" fill="#8a5634" transform="rotate(14 23 60)"/><ellipse cx="77" cy="60" rx="8" ry="15" fill="#8a5634" transform="rotate(-14 77 60)"/><ellipse cx="50" cy="65" rx="19" ry="17" fill="#f6e6cc"/><circle cx="40" cy="46" r="3.2" fill="#3d1424"/><circle cx="60" cy="46" r="3.2" fill="#3d1424"/><circle cx="41" cy="45" r="1" fill="#fff"/><circle cx="61" cy="45" r="1" fill="#fff"/><circle cx="33" cy="55" r="4.5" fill="#ff8fa3" opacity=".65"/><circle cx="67" cy="55" r="4.5" fill="#ff8fa3" opacity=".65"/><path d="M45.5 51H54.5L50 58Z" fill="#f0a030" stroke="#f0a030" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+    }
+    const row = (...e) => `<div class="row">${e.map(x => `<span>${x}</span>`).join("")}</div>`;
+    const P = [
+      {a: heart(130), h: "Hi Zalak,", s: "I have a surprise for you."},
+      {a: `<div class="cal"><b>NOVEMBER</b><i>14</i></div>`, h: "The day two strangers met, and something quietly changed."},
+      {a: row("✨", "🌙", "✨"), h: "Since that day, I’ve been dreaming of a beautiful life with you."},
+      {a: `<svg width="170" viewBox="0 0 160 100"><path class="inf" pathLength="1" d="M80 50C65 20 20 20 20 50 20 80 65 80 80 50 95 20 140 20 140 50 140 80 95 80 80 50Z" fill="none" stroke="var(--rose)" stroke-width="5" stroke-linecap="round"/></svg>`, h: "I know we’re still getting to know each other.", s: "But we have a whole lifetime for that."},
+      {a: `<div class="fly">${[10, 55, 20, 60, 5, 45].map((t, k) => `<span style="left:${8 + k * 15}%;top:${t}%;animation-delay:-${k * .7}s">🦋</span>`).join("")}</div>`, h: "I honestly get butterflies when I read our conversation about your wishes for “us”."},
+      {a: row("🌱"), h: "I want to chase our dreams and ambitions with you.", s: "Starting with…"},
+      {a: `<div class="globe">🌍<div class="orbit"><span>✈️</span></div></div>`, h: "Exploring the world."},
+      {a: row("🪂", "🌉", "🤿"), h: "Adventures. Skydiving, bungee jumping, scuba diving.", s: "(I’ll scream first. You’ll laugh. Deal?)"},
+      {a: row("💃", "🧘‍♀️"), h: "Starting a dance and yoga studio.", s: "I’ll be your first student. Terrible, but very loyal."},
+      {a: `<div class="cup">☕<i style="left:32%"></i><i style="left:48%;animation-delay:.8s"></i><i style="left:64%;animation-delay:1.6s"></i></div>`, h: "Opening a café."},
+      {a: row("👶", "👶"), h: "And one day, two beautiful babies, just the way you dreamed of."},
+      {a: `<div class="two">${heart(70)}${heart(70)}</div>`, h: "Let’s do it all.", s: "Together."},
+      {a: bird(130), h: "Will you be the reason for my permanent happiness, my chakli?", b: `<div class="btns"><button class="yes" id="yes">Yes</button><button class="no" id="no">No</button></div>`}
+    ];
+    let i = 0, done = 0;
+    function render(html) {const g = $("pg"); g.className = ""; void g.offsetWidth; g.className = "in"; g.innerHTML = html}
+    function show() {
+      const p = P[i];
+      render(`<div>${p.a}</div><h1>${p.h}</h1>${p.s ? `<p>${p.s}</p>` : ""}${p.b || ""}`);
+      $("bar").style.width = (i + 1) / P.length * 100 + "%";
+      $("hint").textContent = i ? "tap to continue" : "tap the heart";
+      $("hint").style.display = i < P.length - 1 ? "" : "none";
+      if (p.b) wire();
+    }
+    function wire() {
+      const no = $("no"), yes = $("yes"), L = ["No", "Are you sure? 🥺", "Think again…", "Wrong button 😄", "Last chance 😉"];
+      let n = 0;
+      no.addEventListener("pointerdown", e => {
+        e.preventDefault(); n++;
+        if (n >= L.length) {no.style.display = "none"; yes.style.transform = "scale(1.25)"; return }
+        no.textContent = L[n]; no.style.position = "fixed";
+        const w = no.offsetWidth, h = no.offsetHeight;
+        no.style.left = R(12, innerWidth - w - 12) + "px"; no.style.top = R(90, innerHeight - h - 40) + "px";
+        yes.style.transform = `scale(${1 + n * .1})`;
+      });
+      yes.addEventListener("click", () => {done = 1; v.play().catch(() => {const b = $("pl"); if (b) b.textContent = "▶ Play"}); finale()});
+    }
+    function finale() {
+      render(`<div class="jump">${bird(150)}</div><h1>You said yes!</h1><p>I’m the happiest person alive right now.</p><div class="btns"><button class="yes" id="pl">⏸ Pause</button></div>`);
+      $("bar").style.width = "100%"; $("hint").style.display = "none";
+      if (v) {
+        const lab = () => {$("pl").textContent = v.paused ? "▶ Play" : "⏸ Pause"};
+        v.onplay = v.onpause = v.onended = lab;
+        $("pl").onclick = () => v.paused ? v.play() : v.pause();
+      }
+      for (let n = 0; n < 44; n++) {
+        const s = document.createElement("span"); s.className = "cf"; s.textContent = ["💛", "❤️", "🦋", "🌸"][n % 4];
+        s.style.cssText = `left:${R(0, 94)}vw;font-size:${R(18, 32)}px;animation-duration:${R(4, 8)}s;animation-delay:${R(0, 2)}s`;
+        document.body.appendChild(s); setTimeout(() => s.remove(), 11000);
+      }
+    }
+    document.addEventListener("click", e => {
+      if (done || i >= P.length - 1 || e.target.closest("button")) return;
+      i = Math.max(0, i + (e.clientX < innerWidth * .25 ? -1 : 1)); show();
+    });
+    $("fl").innerHTML = Array.from({length: 14}, () => `<span style="left:${R(0, 100)}%;font-size:${R(14, 34)}px;animation-duration:${R(14, 26)}s;animation-delay:-${R(0, 22)}s">♥</span>`).join("");
+    show();
+  </script>
+</body>
+
+</html>
